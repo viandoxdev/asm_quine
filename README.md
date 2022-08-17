@@ -9,24 +9,24 @@ and exiting (calling SYS_EXIT with an error code of 0).
 
 Some strings are encoded as decimal (with `.byte`) instead of as ascii (with `.ascii`/`.asciz`) because they contain caracters that would otherwise need escaping.
 This is problematic since the printed code would be valid, but the printed string (the final one) wouldn't. For example the line:
-```asm
+```gas
 b: .ascii ".asciz \""
 ```
 would need to be put in the string as
-```asm
+```gas
 "...\0b: .ascii \".asciz \\\"\"\0..."
 ```
 which would print, on the first pass
-```asm
+```gas
 b: .ascii ".asciz \""
 ```
 but then on the second pass the string would be reconstructed as
-```asm
+```gas
 "...\0b: .ascii ".asciz \""\0..."
 ```
 which is wrong.
 
-```asm
+```gas
 # a macro that sends a write syscall
 # no need to set stdout as it is set at the begining of _start, and %rdi is never touched
 .macro k
